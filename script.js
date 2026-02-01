@@ -130,93 +130,78 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    contactForm.addEventListener('submit', function () {
 
-            clearErrors();
+        clearErrors();
 
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const service = document.getElementById('service').value;
-            const message = document.getElementById('message').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const service = document.getElementById('service').value;
+        const message = document.getElementById('message').value.trim();
 
-            let isValid = true;
+        let isValid = true;
 
-            if (name === '' || name.length < 2) {
-                showError('name', 'Please enter a valid name (at least 2 characters)');
-                isValid = false;
-            }
+        if (name.length < 2) {
+            showError('name', 'Please enter a valid name (at least 2 characters)');
+            isValid = false;
+        }
 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email === '' || !emailRegex.test(email)) {
-                showError('email', 'Please enter a valid email address');
-                isValid = false;
-            }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showError('email', 'Please enter a valid email address');
+            isValid = false;
+        }
 
-            const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
-            if (phone === '' || !phoneRegex.test(phone)) {
-                showError('phone', 'Please enter a valid phone number');
-                isValid = false;
-            }
+        const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+        if (!phoneRegex.test(phone)) {
+            showError('phone', 'Please enter a valid phone number');
+            isValid = false;
+        }
 
-            if (service === '') {
-                showError('service', 'Please select a service type');
-                isValid = false;
-            }
+        if (!service) {
+            showError('service', 'Please select a service type');
+            isValid = false;
+        }
 
-            if (message === '' || message.length < 10) {
-                showError('message', 'Please enter a message (at least 10 characters)');
-                isValid = false;
-            }
+        if (message.length < 10) {
+            showError('message', 'Please enter a message (at least 10 characters)');
+            isValid = false;
+        }
 
-            if (isValid) {
-                const formMessage = document.getElementById('form-message');
+        if (!isValid) return;
 
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalBtnText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitBtn.disabled = true;
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
 
-                setTimeout(() => {
-                    contactForm.reset();
-                    submitBtn.innerHTML = originalBtnText;
-                    submitBtn.disabled = false;
+        contactForm.submit(); // ✅ Netlify handles submission
+    });
+}
+function showError(fieldId, message) {
+    const input = document.getElementById(fieldId);
+    const errorElement = document.getElementById(`${fieldId}-error`);
 
-                    formMessage.textContent = 'Thank you for your message! We will get back to you within 24 hours.';
-                    formMessage.className = 'form-message success';
+    input.style.borderColor = 'var(--error)';
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+}
 
-                    setTimeout(() => {
-                        formMessage.className = 'form-message';
-                        formMessage.textContent = '';
-                    }, 5000);
-                }, 1500);
-            }
-        });
-    }
+function clearErrors() {
+    const inputs = document.querySelectorAll('.form-input');
+    const errors = document.querySelectorAll('.form-error');
 
-    function showError(fieldId, message) {
-        const input = document.getElementById(fieldId);
-        const errorElement = document.getElementById(`${fieldId}-error`);
+    inputs.forEach(input => {
+        input.style.borderColor = 'var(--border-color)';
+    });
 
-        input.style.borderColor = 'var(--error)';
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-    }
+    errors.forEach(error => {
+        error.textContent = '';
+        error.style.display = 'none';
+    });
+}
 
-    function clearErrors() {
-        const inputs = contactForm.querySelectorAll('.form-input');
-        const errors = contactForm.querySelectorAll('.form-error');
 
-        inputs.forEach(input => {
-            input.style.borderColor = 'var(--border-color)';
-        });
-
-        errors.forEach(error => {
-            error.textContent = '';
-            error.style.display = 'none';
-        });
-    }
 
     const clientsTrack = document.querySelector('.clients-track');
     if (clientsTrack) {
@@ -260,63 +245,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.getElementById('contact-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
 
-    // Get form values
-    const formData = {
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        service: document.getElementById('service').value,
-        message: document.getElementById('message').value.trim()
-    };
+      
 
-    // Validate form
-    if (!formData.name || !formData.email || !formData.phone || !formData.service || !formData.message) {
-        alert('Please fill all fields');
-        return;
-    }
-
-    // Get submit button
-    const submitBtn = document.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    // Disable button and show loading
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
-
-    try {
-        // Send email
-        const response = await fetch('http://localhost:3000/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            // Show success message
-            document.getElementById('form-message').className = 'form-message success';
-            document.getElementById('form-message').textContent = 'Message sent successfully! We will contact you soon.';
-            document.getElementById('form-message').style.display = 'block';
-            
-            // Reset form
-            document.getElementById('contact-form').reset();
-        } else {
-            throw new Error(result.error || 'Failed to send email');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('form-message').className = 'form-message error';
-        document.getElementById('form-message').textContent = 'Failed to send message. Please try again.';
-        document.getElementById('form-message').style.display = 'block';
-    } finally {
-        // Re-enable button
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
-    }
-});
