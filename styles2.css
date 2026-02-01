@@ -650,6 +650,108 @@ body {
     }
 }
 
+/* Tablet devices (768px to 1024px) */
+@media screen and (max-width: 1024px) {
+    .clients-carousel {
+        padding: 30px 0;
+        margin-bottom: 40px;
+    }
+    
+    .client-logo {
+        width: 300px;
+        height: 240px;
+    }
+    
+    .clients-track {
+        gap: 40px;
+    }
+    
+    .logo-placeholder i {
+        font-size: 2.5rem;
+    }
+    
+    .logo-placeholder span {
+        font-size: 1.6rem;
+    }
+}
+
+/* Mobile devices (up to 767px) */
+@media screen and (max-width: 767px) {
+    .clients-carousel {
+        padding: 20px 0;
+        margin-bottom: 30px;
+        border-radius: 8px;
+    }
+    
+    .client-logo {
+        width: 200px;
+        height: 160px;
+    }
+    
+    .clients-track {
+        gap: 30px;
+        animation: scroll 20s linear infinite;
+    }
+    
+    .logo-placeholder i {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+    
+    .logo-placeholder span {
+        font-size: 1.2rem;
+    }
+}
+
+/* Small mobile devices (up to 480px) */
+@media screen and (max-width: 480px) {
+    .clients-carousel {
+        padding: 15px 0;
+        margin-bottom: 20px;
+    }
+    
+    .client-logo {
+        width: 150px;
+        height: 120px;
+    }
+    
+    .clients-track {
+        gap: 20px;
+        animation: scroll 15s linear infinite;
+    }
+    
+    .logo-placeholder i {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .logo-placeholder span {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+}
+
+/* Large screens (1440px and above) */
+@media screen and (min-width: 1440px) {
+    .clients-carousel {
+        padding: 50px 0;
+        margin-bottom: 80px;
+    }
+    
+    .client-logo {
+        width: 420px;
+        height: 320px;
+    }
+    
+    .logo-placeholder i {
+        font-size: 3.5rem;
+    }
+    
+    .logo-placeholder span {
+        font-size: 2.2rem;
+    }
+}
+
 .testimonials {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
