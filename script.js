@@ -130,7 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (contactForm) {
-    contactForm.addEventListener('submit', function () {
+    contactForm.addEventListener('submit', function (event) {
+        event.preventDefault();
 
         clearErrors();
 
