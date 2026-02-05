@@ -8,3 +8,12 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
 });
+build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        thankYou: 'thank-you.html',
+      },
+    },
+  },
+});
